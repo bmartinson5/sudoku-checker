@@ -1,22 +1,10 @@
-export function Grid () {
-  this.rows = [
-                [1,2,3,4,5,6,7,8,9],
-                [2,3,4,5,6,7,8,9,1],
-                [3,4,5,6,7,8,9,1,2],
-                [4,5,6,7,8,9,1,2,3],
-                [5,6,7,8,9,1,2,3,4],
-                [6,7,8,9,1,2,3,4,5],
-                [7,8,9,1,2,3,4,5,6],
-                [8,9,1,2,3,4,5,6,7]
-              ];
+export function Grid (rows) {
+  this.rows = rows
+
 }
 
 Grid.prototype.gridChecker = function(){
-  var result = true;
-  result = this.checkRows();
-  result = this.checkColumns();
-  result = this.checkGrids();
-  return result
+  return this.checkRows() && this.checkColumns() && this.checkGrids();
 }
 
 Grid.prototype.checkGrids = function(){
@@ -45,7 +33,7 @@ Grid.prototype.checkGrid = function(startY, startX){
 Grid.prototype.checkRows = function(){
   var result = true;
   this.rows.forEach(function(row){
-    for(let i = 0; i < 3; ++i){
+    for(let i = 0; i < row.length; ++i){
       if(row[i] !== -1){
         if(row.slice(0, i).includes(row[i]) || row.slice(i+1, row.length).includes(row[i]))
           result = false;
@@ -57,7 +45,7 @@ Grid.prototype.checkRows = function(){
 
 Grid.prototype.checkColumns = function () {
   var result = true;
-  for(let i = 0; i < 3; ++i){
+  for(let i = 0; i < this.rows.length; ++i){
     var columnNums = []
     this.rows.forEach(function(row){
       if(columnNums.includes(row[i])){
@@ -68,6 +56,4 @@ Grid.prototype.checkColumns = function () {
     })
   }
   return result;
-
-
 }
