@@ -46,14 +46,20 @@ export default class UnsolvedGrid {
   }
 
   fillInRandom(){
-    this.scrambleOpenNumbers();
+    const scrambledNums = this.scrambleOpenNumbers().slice()
+
     let isPossibleSolution = true;
     this.openIdx.forEach(function(idxPair, idx){
-      if(!this.rows[idxPair[0]].includes(this.openNumbers[idx]) && !this.checkColForNum(idxPair[1], this.openNumbers[idx])){
-        this.rows[idxPair[0]][idxPair[1]] = this.openNumbers[idx];
+      let foundNumToFillBox = false;
+      for (let i=0; i<scrambledNums.length; i++) {
+        if(!this.rows[idxPair[0]].includes(scrambledNums[i]) && !this.checkColForNum(idxPair[1], scrambledNums[i])){
+          this.rows[idxPair[0]][idxPair[1]] = scrambledNums.splice(i, 1)[0];
+          foundNumToFillBox = true;
+          break;
+        }
       }
-      else {
-        isPossibleSolution = false
+      if (!foundNumToFillBox) {
+        isPossibleSolution = false;
         return
       }
     }, this)
@@ -70,9 +76,6 @@ export default class UnsolvedGrid {
     })
     return found
   }
-
-
-
 };
 
 // export function UnsolvedGrid(rows){
