@@ -189,26 +189,49 @@ describe('Test unsolved puzzle', function() {
   });
 });
 
-// describe('test fillInRandom', function() {
-//     let grid;
-//     beforeEach(function functionName() {
-//       grid = new UnsolvedGrid ([
-//         [4,8,3,9,2,0,0,5,0],
-//         [9,0,0,3,4,5,8,0,1],
-//         [2,5,1,0,7,6,4,9,3],
-//         [5,4,0,1,3,2,9,7,0],
-//         [7,0,9,5,6,0,0,3,8],
-//         [1,0,6,7,9,8,2,4,0],
-//         [0,7,0,6,8,0,5,1,4],
-//         [0,0,4,2,5,0,7,0,9],
-//         [6,9,0,4,1,7,3,8,2]
-//       ]);
-//       // grid.fillInRandom();
-//     })
-//     it('should fill grid with random numbers from open numbers array and not contain any zeros', function() {
-//       // grid.rows.forEach(function(row){
-//       //   expect(row.includes(0)).toEqual(false);
-//       // })
-//       expect(grid.rows[0].includes(0)).toEqual(false);
-//     })
-// })
+describe('test fillInRandom', function() {
+    let grid;
+    beforeEach(function functionName() {
+      grid = new UnsolvedGrid ([
+        [4,8,3,9,2,0,0,5,0],
+        [9,0,0,3,4,5,8,0,1],
+        [2,5,1,0,7,6,4,9,3],
+        [5,4,0,1,3,2,9,7,0],
+        [7,0,9,5,6,0,0,3,8],
+        [1,0,6,7,9,8,2,4,0],
+        [0,7,0,6,8,0,5,1,4],
+        [0,0,4,2,5,0,7,0,9],
+        [6,9,0,4,1,7,3,8,2]
+      ]);
+      grid.fillInRandom();
+    })
+    it('should fill grid with random numbers from open numbers array and not contain any zeros', function() {
+      grid.rows.forEach(function(row){
+        expect(row.includes(0)).toEqual(false);
+      })
+      // expect(grid.rows[0].includes(0)).toEqual(false);
+    })
+})
+
+describe('test fillInRandom', function() {
+    let grid;
+    beforeEach(function functionName() {
+      grid = new UnsolvedGrid ([
+        [4,8,3,9,2,0,0,5,0],
+        [9,0,0,3,4,5,8,0,1],
+        [2,5,1,0,7,6,4,9,3],
+        [5,4,0,1,3,2,9,7,0],
+        [7,0,9,5,6,0,0,3,8],
+        [1,0,6,7,9,8,2,4,0],
+        [0,7,0,6,8,0,5,1,4],
+        [0,0,4,2,5,0,7,0,9],
+        [6,9,0,4,1,7,3,8,2]
+      ]);
+      grid.fillInRandom();
+    })
+    it('should fill grid with random numbers from open numbers array and not contain any zeros', function() {
+      grid.rows.forEach(function(row){
+        expect(row.includes(0)).toEqual(false);
+      })
+    })
+})

@@ -1,6 +1,9 @@
 export default class UnsolvedGrid {
   constructor(rows){
-    this.rows = rows;
+    this.rows = [];
+    rows.forEach(function(row){
+      this.rows.push(row.slice())
+    }, this)
     this.openIdx = [];
     this.openNumbers = [];
     this.findOpenIdx();
@@ -38,16 +41,34 @@ export default class UnsolvedGrid {
       const randIdx = Math.floor(Math.random() * openNumbersCount);
       this.openNumbers[idx] = this.openNumbers[randIdx];
       this.openNumbers[randIdx] = openNumber;
-    })
+    }, this)
+    return this.openNumbers;
   }
 
   fillInRandom(){
     this.scrambleOpenNumbers();
-    console.log(this.openNumbers);
+    let isPossibleSolution = true;
     this.openIdx.forEach(function(idxPair, idx){
-      this.rows[idxPair[0]][idxPair[1]] = this.openNumbers[idx];
+      if(!this.rows[idxPair[0]].includes(this.openNumbers[idx]) && !this.checkColForNum(idxPair[1], this.openNumbers[idx])){
+        this.rows[idxPair[0]][idxPair[1]] = this.openNumbers[idx];
+      }
+      else {
+        isPossibleSolution = false
+        return
+      }
+    }, this)
+    return isPossibleSolution;
+  }
+
+  checkColForNum(colNum, theNum){
+    let found = false
+    this.rows.forEach(function(row){
+      if(row[colNum] === (theNum)){
+        found = true
+        return
+      }
     })
-    console.log(this.rows);
+    return found
   }
 
 

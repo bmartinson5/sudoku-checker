@@ -1,6 +1,8 @@
 export function Grid (rows) {
-  this.rows = rows
-
+  this.rows = [];
+  rows.forEach(function(row){
+    this.rows.push(row.slice())
+  }, this)
 }
 
 Grid.prototype.gridChecker = function(){
