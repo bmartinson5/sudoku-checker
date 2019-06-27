@@ -4,16 +4,28 @@ import $ from 'jquery';
 import { Grid } from './grid.js'
 import UnsolvedGrid  from './UnsolvedGrid.js'
 
+// const userGrid = new Grid([
+//     [4,8,3,9,2,1,6,5,7],
+//     [0,6,7,3,4,5,0,2,1],
+//     [2,5,1,8,7,6,4,9,3],
+//     [5,4,8,0,3,2,9,7,6],
+//     [7,2,9,5,6,4,1,3,8],
+//     [1,3,6,7,9,8,2,4,5],
+//     [3,7,2,6,8,9,5,0,0],
+//     [8,1,4,2,5,3,7,6,0],
+//     [6,9,5,4,1,7,3,8,0]
+// ]);
+
 const userGrid = new Grid([
-  [0,0,0,0,0,0,0,0,0],
-  [0,0,0,0,0,0,0,0,0],
-  [0,0,0,0,0,0,0,0,0],
-  [0,0,0,0,0,0,0,0,0],
-  [0,0,0,0,0,0,0,0,0],
-  [0,0,0,0,0,0,0,0,0],
-  [0,0,0,0,0,0,0,0,0],
-  [0,0,0,0,0,0,0,0,0],
-  [0,0,0,0,0,0,0,0,0]
+    [0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0,0]
 ]);
 
 // let duplicateRowIdx = new Set();
@@ -77,8 +89,8 @@ function findDuplicates(arr, id, isCol){
 
 function checkErrors() {
   // remove error highlights
-  $("inside-box").removeClass("highlight-error-box");
-  $("row").removeClass("highlight-error");
+  $(".inside-box").removeClass("highlight-error-box");
+  $(".row").removeClass("highlight-error");
 
   // find duplicate boxes and highlight them
   userGrid.gridChecker();
@@ -88,7 +100,17 @@ function checkErrors() {
   });
 }
 
+function printGrid(grid){
+  grid.rows.forEach(function(row, rowId){
+    row.forEach(function(box, colId){
+      if(box !== 0)
+      $("#"+rowId+colId).text(box)
+    })
+  })
+}
+
 $(document).ready(function(){
+  printGrid(userGrid)
   // const startingGrid = [
   //   [7,0,0,0,0,4,2,0,0],
   //   [0,3,0,0,2,0,0,4,0],
@@ -165,5 +187,11 @@ $(document).ready(function(){
     }
   });
 
+  $(".solve").click(function(){
+    let gridToSolve = new UnsolvedGrid(userGrid.rows)
+    const solvedGrid = gridToSolve.solve();
+    if(solvedGrid)
+      printGrid(solvedGrid);
+  })
 
 })

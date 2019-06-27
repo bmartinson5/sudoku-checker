@@ -26,7 +26,6 @@ Grid.prototype.checkGrids = function(){
 }
 
 Grid.prototype.checkGrid = function(startY, startX){
-  console.log("checked grid", startX, startY);
   var gridNums = []
   let result = true;
   for (let y = startY; y < startY+3; ++y) {
@@ -37,15 +36,17 @@ Grid.prototype.checkGrid = function(startY, startX){
       }
     }
   }
+
   for (var i = 0; i < gridNums.length; i++) {
     for (var j = i + 1; j < gridNums.length; j++) {
       if (gridNums[i].num === gridNums[j].num) {
+        result = false;
         this.duplicateIdx.push(gridNums[i].idx);
         this.duplicateIdx.push(gridNums[j].idx);
       }
     }
   }
-  return true;
+  return result;
 }
 
 Grid.prototype.checkRows = function(){

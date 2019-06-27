@@ -1,3 +1,4 @@
+import  { Grid } from './grid.js'
 export default class UnsolvedGrid {
   constructor(rows){
     this.rows = [];
@@ -90,11 +91,13 @@ export default class UnsolvedGrid {
           break;
         }
       }
-      if (count % 1000 === 0) {
-        console.log("try" + count);
-      }
-    }while(count <= 500000);
+      // if (++count % 1000 === 0) {
+      //   console.log("try" + count);
+      // }
+    } while(count <= 500000);
     console.log(gridToCheck);
+
+    return gridToCheck;
   }
 };
 
