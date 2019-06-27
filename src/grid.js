@@ -32,7 +32,7 @@ Grid.prototype.checkGrid = function(startY, startX){
     for (let x = startX; x < startX+3; ++x){
       let value = this.rows[y][x];
       if (value !== 0){
-        gridNums.push({num:value, idx:[x,y]})
+        gridNums.push({num:value, idx:[y,x]})
       }
     }
   }
