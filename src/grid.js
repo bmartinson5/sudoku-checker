@@ -1,18 +1,24 @@
 export function Grid (rows) {
   this.rows = [];
+  this.duplicateIdx = [];
   rows.forEach(function(row){
     this.rows.push(row.slice())
   }, this)
 }
 
 Grid.prototype.gridChecker = function(){
-  return this.checkRows() && this.checkColumns() && this.checkGrids();
+  this.duplicateIdx = [];
+  const checkRows = this.checkRows();
+  const checkColumns = this.checkColumns();
+  const checkGrids = this.checkGrids();
+  // return this.checkRows() && this.checkColumns() && this.checkGrids();
+  return checkRows && checkColumns && checkGrids;
 }
 
 Grid.prototype.checkGrids = function(){
   var result = true;
-  for (let y = 0; y < 1; ++y) {
-    for (let x = 0; x < 1; ++x){
+  for (let y = 0; y < 3; ++y) {
+    for (let x = 0; x < 3; ++x){
       result = this.checkGrid(y*3, x*3);
     }
   }
@@ -20,14 +26,23 @@ Grid.prototype.checkGrids = function(){
 }
 
 Grid.prototype.checkGrid = function(startY, startX){
+  console.log("checked grid", startX, startY);
   var gridNums = []
+  let result = true;
   for (let y = startY; y < startY+3; ++y) {
     for (let x = startX; x < startX+3; ++x){
-      if(this.rows[y][x] !== 0){
-        if(gridNums.includes(this.rows[y][x]))
-          return false;
+      let value = this.rows[y][x];
+      if (value !== 0){
+        gridNums.push({num:value, idx:[x,y]})
       }
-      gridNums.push(this.rows[y][x])
+    }
+  }
+  for (var i = 0; i < gridNums.length; i++) {
+    for (var j = i + 1; j < gridNums.length; j++) {
+      if (gridNums[i].num === gridNums[j].num) {
+        this.duplicateIdx.push(gridNums[i].idx);
+        this.duplicateIdx.push(gridNums[j].idx);
+      }
     }
   }
   return true;
@@ -35,28 +50,42 @@ Grid.prototype.checkGrid = function(startY, startX){
 
 Grid.prototype.checkRows = function(){
   var result = true;
-  this.rows.forEach(function(row){
+  this.rows.forEach(function(row, rowIdx){
     for(let i = 0; i < row.length; ++i){
       if(row[i] !== 0){
-        if(row.slice(0, i).includes(row[i]) || row.slice(i+1, row.length).includes(row[i]))
+        const dupIdx= row.slice(i+1, row.length).indexOf(row[i]) + i + 1;
+        if(dupIdx > i) {
           result = false;
+          this.duplicateIdx.push([rowIdx, i]);
+          this.duplicateIdx.push([rowIdx, dupIdx]);
+        }
       }
     }
-  })
+  }, this)
   return result;
 }
 
 Grid.prototype.checkColumns = function () {
   var result = true;
-  for(let i = 0; i < this.rows.length; ++i){
-    var columnNums = []
-    this.rows.forEach(function(row){
-      if(columnNums.includes(row[i])){
-        result = false;
-      }
-      if(row[i] !== 0)
-        columnNums.push(row[i])
+  for(let colIdx = 0; colIdx < this.rows.length; ++colIdx){
+    let col = this.rows.map(function(row){
+      return row[colIdx]
     })
+    for(let i = 0; i < col.length; ++i){
+      if(col[i] !== 0){
+        const dupIdx= col.slice(i+1, col.length).indexOf(col[i]) + i + 1;
+        if(dupIdx > i) {
+          result = false;
+          this.duplicateIdx.push([i, colIdx]);
+          this.duplicateIdx.push([dupIdx, colIdx]);
+        }
+        // if(col.slice(i+1, col.length).includes(col[i])) {
+        //   result = false;
+        //   this.duplicateIdx.push([i, colIdx]);
+        // }
+      }
+    }
+
   }
   return result;
 }

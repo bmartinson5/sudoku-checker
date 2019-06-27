@@ -16,32 +16,76 @@ const userGrid = new Grid([
   [0,0,0,0,0,0,0,0,0]
 ]);
 
-function checkErrors(){
-  const duplicateIdx = new Set();
+// let duplicateRowIdx = new Set();
+// let duplicateColIdx = new Set();
+let duplicateIdx = []
+function checkErrors1(){
+  // duplicateRowIdx = new Set();
+  // duplicateColIdx = new Set();
+  duplicateIdx = [];
   const rowId = $(".selected-cell")[0].id[0];
+  const colId = $(".selected-cell")[0].id[1];
   let row = userGrid.rows[rowId];
+  let col = userGrid.rows.map(function(row){
+    return row[colId]
+  })
 
+  //check Columns for errors
+  if (!userGrid.checkColumns()) {
+    findDuplicates(col, colId, true);
+    // TODO: highlght column
+  } else {
+    // TODO: unhighlight column
+  }
+
+  //check Row for errors
   if (!userGrid.checkRows()) {
-    for (var i = 0; i < row.length; i++) {
-      for (var x = i+1; x < row.length; x++) {
-        if(row[x] === row[i] && row[i] !== 0){
-          duplicateIdx.add(i);
-          duplicateIdx.add(x);
-        }
-      }
-    }
-    $(".selected-cell").parent().addClass("highlight-error");
+    findDuplicates(row, rowId);
+    //$(".selected-cell").parent().addClass("highlight-error");
   } else {
     $(".selected-cell").parent().removeClass("highlight-error");
   }
 
-  for (var i = 0; i < row.length; i++) {
-    if (duplicateIdx.has(i)) {
-      $("#"+rowId+i).addClass("highlight-error-box");
-    } else {
-      $("#"+rowId+i).removeClass("highlight-error-box");
+  // check Grid for errors
+
+  // remove error highlights from boxes
+  $("inside-box").removeClass("highlight-error-box");
+
+  // loop through duplicates and highlight errors
+  duplicateIdx.forEach(function(idx){
+    $(".row"+idx[0]).addClass("highlight-error");
+    $("#"+idx[0]+idx[1]).addClass("highlight-error-box");
+  });
+
+}
+
+function findDuplicates(arr, id, isCol){
+  for (var i = 0; i < arr.length; i++) {
+    for (var x = i+1; x < arr.length; x++) {
+      if(arr[x] === arr[i] && arr[i] !== 0){
+        if (isCol){
+          duplicateIdx.push([i,id]);
+          duplicateIdx.push([x,id]);
+        } else {
+          duplicateIdx.push([id,i]);
+          duplicateIdx.push([id,x]);
+        }
+      }
     }
   }
+}
+
+function checkErrors() {
+  // remove error highlights
+  $("inside-box").removeClass("highlight-error-box");
+  $("row").removeClass("highlight-error");
+
+  // find duplicate boxes and highlight them
+  userGrid.gridChecker();
+  console.log(userGrid.duplicateIdx);
+  userGrid.duplicateIdx.forEach(idx => {
+    $("#"+idx[0]+idx[1]).addClass("highlight-error-box");
+  });
 }
 
 $(document).ready(function(){
@@ -104,7 +148,6 @@ $(document).ready(function(){
       userGrid.rows[id[0]][id[1]] = 0;
       checkErrors();
     }
-    console.log(e.keyCode);
   });
 
   $(document).keydown(function(e){
@@ -118,8 +161,7 @@ $(document).ready(function(){
 
       userGrid.rows[id[0]][id[1]] = boxNumber;
       checkErrors();
-      console.log(userGrid.gridChecker());
-            console.log(userGrid.rows);
+
     }
   });
 
