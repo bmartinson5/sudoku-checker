@@ -76,6 +76,26 @@ export default class UnsolvedGrid {
     })
     return found
   }
+
+  solve() {
+    let count = 1;
+    let gridToCheck;
+    do{
+      let solvingGrid = new UnsolvedGrid(this.rows);
+      if (solvingGrid.fillInRandom()){
+        // console.log("startingGrid", startingGrid);
+        gridToCheck = new Grid(solvingGrid.rows)
+        if(gridToCheck.checkGrids()){
+          console.log("Found valid puzzle");
+          break;
+        }
+      }
+      if (count % 1000 === 0) {
+        console.log("try" + count);
+      }
+    }while(count <= 500000);
+    console.log(gridToCheck);
+  }
 };
 
 // export function UnsolvedGrid(rows){

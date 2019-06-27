@@ -23,8 +23,9 @@ Grid.prototype.checkGrid = function(startY, startX){
   var gridNums = []
   for (let y = startY; y < startY+3; ++y) {
     for (let x = startX; x < startX+3; ++x){
-      if(gridNums.includes(this.rows[y][x])){
-        return false;
+      if(this.rows[y][x] !== 0){
+        if(gridNums.includes(this.rows[y][x]))
+          return false;
       }
       gridNums.push(this.rows[y][x])
     }
@@ -36,7 +37,7 @@ Grid.prototype.checkRows = function(){
   var result = true;
   this.rows.forEach(function(row){
     for(let i = 0; i < row.length; ++i){
-      if(row[i] !== -1){
+      if(row[i] !== 0){
         if(row.slice(0, i).includes(row[i]) || row.slice(i+1, row.length).includes(row[i]))
           result = false;
       }
@@ -53,7 +54,7 @@ Grid.prototype.checkColumns = function () {
       if(columnNums.includes(row[i])){
         result = false;
       }
-      if(row[i] !== -1)
+      if(row[i] !== 0)
         columnNums.push(row[i])
     })
   }
