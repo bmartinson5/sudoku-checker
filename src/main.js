@@ -203,8 +203,12 @@ $(document).ready(function(){
   $(".solve").click(function(){
     let gridToSolve = new UnsolvedGrid(userGrid.rows)
     const solvedGrid = gridToSolve.solve();
-    if(solvedGrid)
+
+    if(solvedGrid){
+      userGrid.rows = solvedGrid.rows;
       printGrid(solvedGrid);
+
+    }
   })
 
 })
