@@ -46,25 +46,75 @@ export default class UnsolvedGrid {
     return this.openNumbers;
   }
 
+  fillSpotOptions(){
+    //fill grid with arr of 1-9
+    let spotOptions = []
+    for(let i = 0; i < 9; i++) {
+      spotOptions.push([])
+      for (let x = 0; x < 9; x++) {
+        spotOptions[i].push([]);
+        for (let r = 1; r < 10; r++){
+          spotOptions[i][x].push(r);
+        }
+      }
+    }
+    return spotOptions;
+  }
+
   fillInRandom(){
     const scrambledNums = this.scrambleOpenNumbers().slice()
-
     let isPossibleSolution = true;
-    this.openIdx.forEach(function(idxPair, idx){
+    let spotOptions = this.fillSpotOptions();
+
+    for (let r = 0; r < this.openIdx.length; r++){
       let foundNumToFillBox = false;
-      for (let i=0; i<scrambledNums.length; i++) {
-        if(!this.checkGridForNum(idxPair,scrambledNums[i])
-            && !this.rows[idxPair[0]].includes(scrambledNums[i]) && !this.checkColForNum(idxPair[1], scrambledNums[i])){
-          this.rows[idxPair[0]][idxPair[1]] = scrambledNums.splice(i, 1)[0];
+      let idxY = this.openIdx[r][0];
+      let idxX = this.openIdx[r][1];
+      let currentValueAtIdx = this.rows[idxY][idxX];
+      let currentSpotOpt = spotOptions[idxY][idxX];
+      if(currentValueAtIdx !== 0){
+        this.rows[idxY][idxX] = 0;
+        //the number put in previously didn't work  - remove it from spotOptions
+        spotOptions[idxY][idxX][currentValueAtIdx-1] = 0;
+      }
+      for (let i=0; i < currentSpotOpt.length; i++) {
+        let theNumToTry = currentSpotOpt[i];
+        if(theNumToTry === 0) continue //previously tried number
+
+        if(
+            !this.checkGridForNum([idxY, idxX], theNumToTry) //check Grid
+            && !this.rows[idxY].includes(theNumToTry) //check row
+            && !this.checkColForNum(idxX, theNumToTry) //check Column
+          ){
+          //the num works for now, add to grid
+          this.rows[idxY][idxX] = theNumToTry;
           foundNumToFillBox = true;
           break;
         }
       }
       if (!foundNumToFillBox) {
-        isPossibleSolution = false;
-        return
+        //backTracking
+        //console.log("backtracking at:", [idxY, idxX])
+        spotOptions[idxY][idxX] = [1,2,3,4,5,6,7,8,9];
+        r -= 2;
       }
-    }, this)
+    }
+
+    // this.openIdx.forEach(function(idxPair, idx){
+    //   let foundNumToFillBox = false;
+    //   for (let i=0; i<scrambledNums.length; i++) {
+    //     if(!this.checkGridForNum(idxPair,scrambledNums[i])
+    //         && !this.rows[idxPair[0]].includes(scrambledNums[i]) && !this.checkColForNum(idxPair[1], scrambledNums[i])){
+    //       this.rows[idxPair[0]][idxPair[1]] = scrambledNums.splice(i, 1)[0];
+    //       foundNumToFillBox = true;
+    //       break;
+    //     }
+    //   }
+    //   if (!foundNumToFillBox) {
+    //     isPossibleSolution = false;
+    //     return
+    //   }
+    // }, this)
     return isPossibleSolution;
   }
 
