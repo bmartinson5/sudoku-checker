@@ -53,7 +53,8 @@ export default class UnsolvedGrid {
     this.openIdx.forEach(function(idxPair, idx){
       let foundNumToFillBox = false;
       for (let i=0; i<scrambledNums.length; i++) {
-        if(!this.rows[idxPair[0]].includes(scrambledNums[i]) && !this.checkColForNum(idxPair[1], scrambledNums[i])){
+        if(!this.checkGridForNum(idxPair,scrambledNums[i])
+            && !this.rows[idxPair[0]].includes(scrambledNums[i]) && !this.checkColForNum(idxPair[1], scrambledNums[i])){
           this.rows[idxPair[0]][idxPair[1]] = scrambledNums.splice(i, 1)[0];
           foundNumToFillBox = true;
           break;
@@ -78,6 +79,34 @@ export default class UnsolvedGrid {
     return found
   }
 
+  checkGridForNum(idxToCheck, theNum){
+    const possibleStartingPoints = [0,3,6]
+    let found = false;
+    let startingY;
+    let startingX;
+    possibleStartingPoints.forEach(function(startingPoint){
+      if(idxToCheck[0] >= startingPoint){
+        startingY = startingPoint;
+      }
+      if(idxToCheck[1] >= startingPoint){
+        startingX = startingPoint;
+      }
+    })
+
+    for (let y = startingY; y < startingY+3; y++) {
+      for (let x = startingX; x < startingX+3; x++) {
+        // console.log("checking", x, y, theNum, this.rows[y][x]);
+        if(theNum === this.rows[y][x]){
+          return true;
+        }
+      }
+    }
+    // console.log("start y, x:", startingY, startingX);
+    return found;
+
+  }
+
+
   solve() {
     let count = 1;
     let gridToCheck;
@@ -94,7 +123,8 @@ export default class UnsolvedGrid {
       // if (++count % 1000 === 0) {
       //   console.log("try" + count);
       // }
-    } while(count <= 500000);
+    } while(++count <= 100000);
+    console.log("no valid");
     console.log(gridToCheck);
 
     return gridToCheck;
