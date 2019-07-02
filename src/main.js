@@ -70,6 +70,7 @@ $(document).ready(function(){
   $(document).keyup(function(e){
     //for delete and backspace only
     if(e.keyCode === 8 || e.keyCode === 46){
+      $(".selected-cell").removeClass('highlight-valid-num')
       const id = $(".selected-cell")[0].id;
       $(".selected-cell").text("")
       userGrid.rows[id[0]][id[1]] = 0;
@@ -78,13 +79,14 @@ $(document).ready(function(){
   });
 
   $(document).keydown(function(e){
-    //only prints 1-9 in squares
+    //only prints 1-9 in squaresl
     if (!$(".selected-cell")[0]) {
       return;
     }
     const boxNumber = e.keyCode-48;
     if(1 <= boxNumber && boxNumber <= 9){
       $(".selected-cell").text(boxNumber);
+      $(".selected-cell").addClass('highlight-valid-num')
       const id = $(".selected-cell")[0].id;
 
       userGrid.rows[id[0]][id[1]] = boxNumber;

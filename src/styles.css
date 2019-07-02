@@ -53,10 +53,6 @@ tr {
     justify-content: center; */
 }
 
-.selected-cell {
-
-}
-
 tr:nth-child(1) {
   border-top: solid 3px black;
 }
@@ -79,6 +75,11 @@ td {
 
 .highlight-cell-border {
   border: solid 3px teal;
+}
+
+
+.highlight-valid-num {
+  color: teal;
 }
 
 .highlight-error-box {
