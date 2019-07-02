@@ -17,73 +17,6 @@ const userGrid = new Grid([
 
 ]);
 
-// const startingGrid = [
-//   [0,8,3,0,0,0,0,5,0],
-//   [9,0,0,3,4,5,8,0,1],
-//   [2,5,1,0,7,6,0,9,3],
-//   [5,4,0,1,0,0,9,7,0],
-//   [7,0,9,5,6,0,0,3,8],
-//   [1,0,6,7,0,8,2,4,0],
-//   [0,7,0,6,8,0,5,1,4],
-//   [0,0,0,2,5,0,7,0,0],
-//   [6,0,0,4,1,7,3,8,0]
-// ]
-
-// const userGrid = new Grid([
-//     [0,0,0,0,0,0,0,0,0],
-//     [0,0,0,0,0,0,0,0,0],
-//     [0,0,0,0,0,0,0,0,0],
-//     [0,0,0,0,0,0,0,0,0],
-//     [0,0,0,0,0,0,0,0,0],
-//     [0,0,0,0,0,0,0,0,0],
-//     [0,0,0,0,0,0,0,0,0],
-//     [0,0,0,0,0,0,0,0,0],
-//     [0,0,0,0,0,0,0,0,0]
-// ]);
-
-// let duplicateRowIdx = new Set();
-// let duplicateColIdx = new Set();
-let duplicateIdx = []
-function checkErrors1(){
-  // duplicateRowIdx = new Set();
-  // duplicateColIdx = new Set();
-  duplicateIdx = [];
-  const rowId = $(".selected-cell")[0].id[0];
-  const colId = $(".selected-cell")[0].id[1];
-  let row = userGrid.rows[rowId];
-  let col = userGrid.rows.map(function(row){
-    return row[colId]
-  })
-
-  //check Columns for errors
-  if (!userGrid.checkColumns()) {
-    findDuplicates(col, colId, true);
-    // TODO: highlght column
-  } else {
-    // TODO: unhighlight column
-  }
-
-  //check Row for errors
-  if (!userGrid.checkRows()) {
-    findDuplicates(row, rowId);
-    //$(".selected-cell").parent().addClass("highlight-error");
-  } else {
-    $(".selected-cell").parent().removeClass("highlight-error");
-  }
-
-  // check Grid for errors
-
-  // remove error highlights from boxes
-  $("inside-box").removeClass("highlight-error-box");
-
-  // loop through duplicates and highlight errors
-  duplicateIdx.forEach(function(idx){
-    $(".row"+idx[0]).addClass("highlight-error");
-    $("#"+idx[0]+idx[1]).addClass("highlight-error-box");
-  });
-
-}
-
 function findDuplicates(arr, id, isCol){
   for (var i = 0; i < arr.length; i++) {
     for (var x = i+1; x < arr.length; x++) {
@@ -111,6 +44,7 @@ function checkErrors() {
   userGrid.duplicateIdx.forEach(idx => {
     $("#"+idx[0]+idx[1]).addClass("highlight-error-box");
   });
+  return userGrid.duplicateIdx.length;
 }
 
 function printGrid(grid){
@@ -124,59 +58,17 @@ function printGrid(grid){
 
 $(document).ready(function(){
   printGrid(userGrid)
-  // const startingGrid = [
-  //   [7,0,0,0,0,4,2,0,0],
-  //   [0,3,0,0,2,0,0,4,0],
-  //   [9,0,0,0,0,0,7,0,0],
-  //   [0,0,1,0,0,0,0,0,9],
-  //   [0,6,0,0,8,0,0,5,0],
-  //   [2,0,0,0,0,0,6,0,0],
-  //   [0,0,6,0,0,0,0,0,3],
-  //   [0,2,0,0,1,0,0,8,0],
-  //   [0,0,3,8,0,0,0,0,7]
-  // ]
 
-  // const startingGrid = [
-  //   [0,8,3,0,0,0,0,5,0],
-  //   [9,0,0,3,4,5,8,0,1],
-  //   [2,5,1,0,7,6,0,9,3],
-  //   [5,4,0,1,0,0,9,7,0],
-  //   [7,0,9,5,6,0,0,3,8],
-  //   [1,0,6,7,0,8,2,4,0],
-  //   [0,7,0,6,8,0,5,1,4],
-  //   [0,0,0,2,5,0,7,0,0],
-  //   [6,0,0,4,1,7,3,8,0]
-  // ]
-
-  // const startingGrid = [
-  //   [4,8,3,9,2,1,6,5,7],
-  //   [0,6,7,3,4,5,0,2,1],
-  //   [2,5,1,8,7,6,4,9,3],
-  //   [5,4,8,0,3,2,9,7,6],
-  //   [7,2,9,5,6,4,1,3,8],
-  //   [1,3,6,7,9,8,2,4,5],
-  //   [3,7,2,6,8,9,5,0,0],
-  //   [8,1,4,2,5,3,7,6,0],
-  //   [6,9,5,4,1,7,3,8,0]
-  // ]
-
-  // const startingGrid = [
-  //   [4,2,1],
-  //   [2,1,2],
-  //   [3,5,0]
-  // ]
 
   $("td").click(function(){
     $("td").removeClass("highlight-cell-border")
     $("td").removeClass("selected-cell")
     $(this).addClass("highlight-cell-border")
     $(this).addClass("selected-cell")
-    $(function() {
-      $(this).focus();
-    });
   })
 
   $(document).keyup(function(e){
+    //for delete and backspace only
     if(e.keyCode === 8 || e.keyCode === 46){
       const id = $(".selected-cell")[0].id;
       $(".selected-cell").text("")
@@ -186,6 +78,7 @@ $(document).ready(function(){
   });
 
   $(document).keydown(function(e){
+    //only prints 1-9 in squares
     if (!$(".selected-cell")[0]) {
       return;
     }
@@ -201,8 +94,15 @@ $(document).ready(function(){
   });
 
   $(".solve").click(function(){
+    $(".warn-errors").hide();
     let gridToSolve = new UnsolvedGrid(userGrid.rows)
-    const solvedGrid = gridToSolve.solve();
+    let solvedGrid;
+    console.log(checkErrors());
+    if(checkErrors() === 0)
+      solvedGrid = gridToSolve.solve();
+    else{
+      $(".warn-errors").show();
+    }
 
     if(solvedGrid){
       userGrid.rows = solvedGrid.rows;
@@ -212,3 +112,63 @@ $(document).ready(function(){
   })
 
 })
+// const startingGrid = [
+//   [7,0,0,0,0,4,2,0,0],
+//   [0,3,0,0,2,0,0,4,0],
+//   [9,0,0,0,0,0,7,0,0],
+//   [0,0,1,0,0,0,0,0,9],
+//   [0,6,0,0,8,0,0,5,0],
+//   [2,0,0,0,0,0,6,0,0],
+//   [0,0,6,0,0,0,0,0,3],
+//   [0,2,0,0,1,0,0,8,0],
+//   [0,0,3,8,0,0,0,0,7]
+// ]
+
+// const startingGrid = [
+//   [0,8,3,0,0,0,0,5,0],
+//   [9,0,0,3,4,5,8,0,1],
+//   [2,5,1,0,7,6,0,9,3],
+//   [5,4,0,1,0,0,9,7,0],
+//   [7,0,9,5,6,0,0,3,8],
+//   [1,0,6,7,0,8,2,4,0],
+//   [0,7,0,6,8,0,5,1,4],
+//   [0,0,0,2,5,0,7,0,0],
+//   [6,0,0,4,1,7,3,8,0]
+// ]
+
+// const startingGrid = [
+//   [4,8,3,9,2,1,6,5,7],
+//   [0,6,7,3,4,5,0,2,1],
+//   [2,5,1,8,7,6,4,9,3],
+//   [5,4,8,0,3,2,9,7,6],
+//   [7,2,9,5,6,4,1,3,8],
+//   [1,3,6,7,9,8,2,4,5],
+//   [3,7,2,6,8,9,5,0,0],
+//   [8,1,4,2,5,3,7,6,0],
+//   [6,9,5,4,1,7,3,8,0]
+// ]
+
+
+// const startingGrid = [
+//   [0,8,3,0,0,0,0,5,0],
+//   [9,0,0,3,4,5,8,0,1],
+//   [2,5,1,0,7,6,0,9,3],
+//   [5,4,0,1,0,0,9,7,0],
+//   [7,0,9,5,6,0,0,3,8],
+//   [1,0,6,7,0,8,2,4,0],
+//   [0,7,0,6,8,0,5,1,4],
+//   [0,0,0,2,5,0,7,0,0],
+//   [6,0,0,4,1,7,3,8,0]
+// ]
+
+// const userGrid = new Grid([
+//     [0,0,0,0,0,0,0,0,0],
+//     [0,0,0,0,0,0,0,0,0],
+//     [0,0,0,0,0,0,0,0,0],
+//     [0,0,0,0,0,0,0,0,0],
+//     [0,0,0,0,0,0,0,0,0],
+//     [0,0,0,0,0,0,0,0,0],
+//     [0,0,0,0,0,0,0,0,0],
+//     [0,0,0,0,0,0,0,0,0],
+//     [0,0,0,0,0,0,0,0,0]
+// ]);

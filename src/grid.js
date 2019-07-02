@@ -80,10 +80,6 @@ Grid.prototype.checkColumns = function () {
           this.duplicateIdx.push([i, colIdx]);
           this.duplicateIdx.push([dupIdx, colIdx]);
         }
-        // if(col.slice(i+1, col.length).includes(col[i])) {
-        //   result = false;
-        //   this.duplicateIdx.push([i, colIdx]);
-        // }
       }
     }
 

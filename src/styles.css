@@ -1,5 +1,16 @@
-.row {
+h1 {
+  margin: 30px;
 }
+
+button {
+  margin: 30px;
+}
+
+.warn-errors {
+  display: none;
+}
+
+
 .col-md-4 {
   /* width: 100px; */
   border: 1px solid gray;
