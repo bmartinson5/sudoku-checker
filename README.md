@@ -6,6 +6,8 @@
 Single page application that allows users to fill out a sudoku puzzle and includes responsive error highlighting functionality. 
 The program can fill in any semi-completed puzzle with a correct solution.  
 
+The backtracking algorithm is used to solve the sudoku: check out (https://en.wikipedia.org/wiki/Sudoku_solving_algorithms#Backtracking) for more info
+
 
 ## Setup/Installation Requirements
 
