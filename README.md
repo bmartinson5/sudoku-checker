@@ -1,6 +1,8 @@
 # Sudoku Solver
 #### By Ben Martinson
 
+## [visit site](https://bmartinson5.github.io/TicTacToe-AI)
+
 ## Description
 
 Single page application that allows users to fill out a sudoku puzzle and includes responsive error highlighting functionality. 
