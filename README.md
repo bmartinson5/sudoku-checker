@@ -1,7 +1,7 @@
 # Sudoku Solver
 #### By Ben Martinson
 
-## [visit site](https://bmartinson5.github.io/TicTacToe-AI)
+## [visit site](https://bmartinson5.github.io/sudoku-solver/)
 
 ## Description
 
