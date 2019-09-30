@@ -1,7 +1,7 @@
 # Sudoku Solver
 #### By Ben Martinson
 
-## [visit site](https://bmartinson5.github.io/sudoku-solver/)
+## [Go to Site - https://bmartinson5.github.io/sudoku-solver/](https://bmartinson5.github.io/sudoku-solver/)
 
 ## Description
 
